@@ -8,8 +8,11 @@ sudo npm cache clean -f
 sudo npm set registry https://registry.npmjs.org/
 sudo npm i -g pm2
 
-curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/package.json --output package.json
-sudo npm install
-
+# download source code
+curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/package.json --output package.json && sudo npm install
 curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/start.js --output start.js
-pm2 stop all && pm2 restart all && pm2 stop all && pm2 start start.js -i --watch
+
+# pm2 scripts
+sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu && pm2 start start.js -i 3 --watch && pm2 save
+
+curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/setup.sh --output setup.sh
