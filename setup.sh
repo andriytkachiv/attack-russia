@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # node
-curl -sL https://deb.nodesource.com/setup_17. | sudo bash -
+curl -sL https://deb.nodesource.com/setup_17.x | sudo bash -
 sudo apt-get install -y nodejs build-essential
 sudo npm install npm -g
 sudo npm cache clean -f
