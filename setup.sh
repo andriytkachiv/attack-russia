@@ -15,4 +15,3 @@ curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/start.
 # pm2 scripts
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu && pm2 start start.js -i 3 --watch && pm2 save
 
-curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/setup.sh --output setup.sh
