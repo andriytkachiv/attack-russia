@@ -12,7 +12,7 @@ sudo npm i -g pm2
 curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/package.json --output package.json && sudo npm install
 curl https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/start.js --output start.js
 
-sudo chown ubuntu:ubuntu /home/ubuntu/.pm2/ -R
+sudo chown ubuntu:ubuntu ~/.pm2/ -R
 sudo chown ubuntu:ubuntu .
 
 # pm2 scripts

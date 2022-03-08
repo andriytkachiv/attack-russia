@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "node-fetch": "^3.2.1"
-  },
-  "type": "module"
+    "dgram": "^1.0.1",
+    "net": "^1.0.2",
+    "request": "^2.88.2"
+  }
 }
