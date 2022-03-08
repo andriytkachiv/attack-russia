@@ -1,7 +1,7 @@
 [
   {
-    "url":"151.236.80.10",
-    "port":"8000",
-    "type":"udp"
+    "url":"https://www.5-tv.ru",
+    "port":"80",
+    "type":"http"
   }
 ]
