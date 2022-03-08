@@ -20,6 +20,7 @@ sudo chown ubuntu:ubuntu /home/ubuntu/.pm2/rpc.sock /home/ubuntu/.pm2/pub.sock
 # pm2 scripts
 env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu &&  pm2 start start.js -i 10 --watch &&  pm2 save
 
+#permissions fix
 sudo chown ubuntu:ubuntu ~/.pm2/ -R
 sudo chown ubuntu:ubuntu .
 sudo chown ubuntu:ubuntu ~/ -R
