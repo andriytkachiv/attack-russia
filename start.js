@@ -3,7 +3,7 @@ const request = require('request');
 const udp = require('dgram');
 //const net = require('net');
 
-var DEBUG = true;
+const DEBUG = true;
 const requestCount = 10000;
 const requestInterval = 100;
 // once in 30mins
@@ -40,45 +40,23 @@ function sendUdp(ip, port){
 }
 
 function sendHttp(url, port) {
-    let urlObject = new URL(url.indexOf('http') !== -1 ? url : 'http://' + url);
+    request({
+        url: url
+    }, function(error, response, body) {
+        if (error) {
+            console.error(error);
+        }
 
-    const options = {
-        hostname: urlObject.host,
-        port: urlObject.protocol === 'https:'? 443: (port? port : 80),
-        path: urlObject.path,
-        method: 'GET',
-        timeout: 5000
-    }
-
-    try {
-        const req = https.request(options, res => {
-            DEBUG && console.log(`statusCode: ${res.statusCode}`)
-
-            res.on('data', d => {
-                //DEBUG && console.log(d);
-            })
-        })
-
-        req.on('socket', function (socket) {
-            socket.setTimeout(3000);
-            socket.on('timeout', function() {
-                req.abort();
-            });
-        });
-
-        req.on('error', error => {
-            DEBUG && console.error(error)
-        })
-
-        req.end()
-    }
-    catch (e) { console.log(e); }
+        DEBUG && console.log(response);
+    });
 }
 
 // update targets
 function updateTargets(callback) {
     request(targetUrl, function(error, response, body) {
         targets = JSON.parse(body);
+        //targets = JSON.parse('[{"url":"193.109.246.120", "port":"8000", "type":"udp"}]');
+
         intervalsCount = 0;
 
         DEBUG && console.log('Targets updated!');
